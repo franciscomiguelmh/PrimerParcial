@@ -1,23 +1,27 @@
-name: Deploy to Surge
+name: Publicar Pagina a Surge.sh
 
 on:
   push:
     branches:
-      - main  # O la rama principal que uses
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Clona el repositorio
         uses: actions/checkout@v3
 
-      - name: Install Surge
+      - name: configura nodejs  
+        uses: actions/setup-node@v3
+        with:
+            node-version: '18' 
+
+      - name: Instala Surge       
         run: npm install --global surge
 
-      - name: Deploy to Surge.sh
-        run: surge --project ./ --domain ${{ secrets.SURGE_DOMAIN }}
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Usas el token almacenado como secreto
+      - name: Publicar pagina
+        run: surge --project ./ --domain ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_API_KEY }}
 
 
