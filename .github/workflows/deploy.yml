@@ -3,7 +3,7 @@ name: Deploy to Surge
 on:
   push:
     branches:
-      - main  
+      - main  # O la rama principal que uses
 
 jobs:
   deploy:
@@ -18,5 +18,6 @@ jobs:
       - name: Deploy to Surge.sh
         run: surge --project ./ --domain ${{ secrets.SURGE_DOMAIN }}
         env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Usas el token almacenado como secreto
+
 
