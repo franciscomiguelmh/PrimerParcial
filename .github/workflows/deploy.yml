@@ -1,27 +1,23 @@
-name: Deploy to Surge.sh
+name: Deploy to Surge
 
 on:
   push:
     branches:
-      - master
+      - main  # O "master", dependiendo de tu rama principal
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Install Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Install Surge
+        run: npm install --global surge
 
-    - name: Install Surge
-      run: npm install --global surge
+      - name: Deploy to Surge.sh
+        run: surge --project ./ --domain ${{ secrets.SURGE_DOMAIN }}  # Si tienes el dominio configurado en secrets
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}  # Token seguro almacenado en los secrets
 
-    - name: Deploy to Surge.sh
-      env:
-        SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-      run: surge ./ https://franciscommh.surge.sh/ -- token SURGE_TOKEN
